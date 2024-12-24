@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar with Slider</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', Arial, sans-serif; /* خط بسيط وأنيق */
+        }
+
+        .navbar {
+            background-color: #FFC107; /* لون الخلفية */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* ظل جميل */
+            position: sticky;
+    top: 0; /* يحدد المسافة من أعلى الصفحة */
+    z-index: 100; /* لجعلها تظهر فوق باقي العناصر */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* إضافة ظل */
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .navbar .logo img {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .navbar .menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .navbar .menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            padding: 5px 15px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar .menu a:hover {
+            background-color: #fff;
+            color: #FFC107;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar .buttons button {
+            background-color: white;
+            border: 2px solid #FFC107;
+            padding: 7px 15px;
+            cursor: pointer;
+            border-radius: 20px;
+            font-weight: bold;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .navbar .buttons button:hover {
+            background-color: #FFC107;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar .search-cart .icon {
+            font-size: 20px;
+            cursor: pointer;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .navbar .search-cart .icon:hover {
+            color: #FFC107;
+        }
+
+        /* Slider Styling */
+        .slider {
+            margin: 20px auto;
+            max-width: 1200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slider .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slider .slide {
+            min-width: 300px;
+            margin: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #fff;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .slider .slide:hover {
+            transform: scale(1.05); /* تكبير خفيف عند المرور */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .slide img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .slide .details {
+            padding: 15px;
+        }
+
+        .slide .details h4 {
+            font-size: 20px;
+            margin: 10px 0;
+            color: #333;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .slide .details h4:hover {
+            color: #FFC107;
+        }
+
+        .slide .details p {
+            font-size: 18px;
+            color: gray;
+            margin: 5px 0 15px;
+        }
+
+        .slide .details button {
+            background-color: #FFC107;
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slide .details button:hover {
+            background-color: #333;
+            color: #FFC107;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .slider .arrow:hover {
+            background-color: #FFC107;
+        }
+
+        .slider .arrow.left {
+            left: 10px;
+        }
+
+        .slider .arrow.right {
+            right: 10px;
+        }
+
+        /* New Section Styling */
+        .section {
+            margin-bottom: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 50px 20px;
+            color: white;
+            background: url('../static/images/amin.jpg') no-repeat center center;
+            background-size: cover;
+            position: relative;
+        }
+
+
+        .section .arrows {
+            position: absolute;
+            bottom: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 2;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .arrow-section {
+            background-color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .arrow-section:hover {
+            transform: scale(1.1);
+        }
+        .categories {
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .categories h2 {
+            font-size: 36px;
+            font-weight: bold;
+            color: #FFC107;
+            margin-bottom: 20px;
+        }
+
+        .categories-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .category {
+            filter: drop-shadow(10px 7px 10px rgb(196, 161, 98));
+
+            background-color: #FFF7E6;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            width: 150px;
+            transition: transform 0.3s ease;
+        }
+
+        .category:hover {
+            transform: scale(1.05);
+        }
+
+        .category img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 10px;
+            object-fit: contain;
+        }
+
+        .category h4 {
+            font-size: 18px;
+            color: #FFC107;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 600px; /* عرض أكبر */
+    max-width: 90%;
+    text-align: center;
+}
+
+.confirm-btn,
+.close-btn {
+    margin: 10px;
+    padding: 15px 30px; /* أزرار أكبر */
+    border: none;
+    border-radius: 10px;
+    font-size: 18px; /* نص أكبر */
+    cursor: pointer;
+}
+.confirm-btn {
+    background: #28a745;
+    color: white;
+}
+
+.close-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.cart-item img {
+    width: 100px; /* تكبير الصورة */
+    height: 70px;
+    border-radius: 10px; /* شكل دائري قليلاً */
+}
+
+.cart-item .details p {
+    font-size: 18px; /* تكبير الخط */
+    margin: 5px 0;
+}
+
+.cart-item .quantity-control {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-control button {
+    width: 40px; /* أزرار أكبر */
+    height: 40px;
+    font-size: 18px;
+    border: none;
+    background: #FFC107;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.quantity-control input {
+    width: 50px;
+    text-align: center;
+    border: 1px solid #ccc;
+    margin: 0 5px;
+    border-radius: 5px;
+    font-size: 16px; /* تكبير النص داخل الحقل */
+}
+
+
+        .slider {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    overflow: hidden;
+}
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    filter: drop-shadow(10px 7px 10px orange);
+
+}
+
+.slide img {
+    width: 100%;
+    height: auto;
+}
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.arrow.left {
+    left: 10px;
+}
+
+.arrow.right {
+    right: 10px;
+}
+
+.arrow:hover {
+    background-color: #FFC107;
+}
+.video-section {
+            margin: 20px auto;
+            max-width: 1200px;
+            text-align: center;
+            background: #f9f9f9;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .video-section video {
+            width: 100%;
+            max-height: 500px;
+            border-radius: 10px;
+        }
+
+        .video-section h2 {
+            color: #FFC107;
+            margin-bottom: 20px;
+        }
+
+        .contact-us {
+            background-color: #f9f9f9;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .contact-us h2 {
+            color: #FFC107;
+            margin-bottom: 20px;
+            font-size: 36px;
+        }
+
+        .contact-us p {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-icons a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .social-icons img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .social-icons img:hover {
+            transform: scale(1.1);
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            color: #333;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            padding: 20px;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .circle {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #FFC107; /* Default background if no image is present */
+        }
+
+        .circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        button {
+            background: #FFC107;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #FF5722;
+        }
+
+
+.dev{
+color: #FFC107;
+text-align: center
+}
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <div class="logo">
+        <img src='../static/images/logo.png' alt="Athath">
+        <span>AL-Amin</span>
+    </div>
+    <div class="menu">
+        <a href="#">Home</a>
+        <a href="#Categories">Categories</a>
+        <a href="#Contact Us">Contact Us</a>
+    </div>
+    <div class="buttons">
+        <button><a href="/logout" style="text-decoration: none; color: inherit;">Log out</a></button>
+    </div>
+    <div class="search-cart">
+        <span class="icon">🔍</span>
+        <span class="icon">🛒</span>
+    </div>
+</div>
+
+<!-- Greeting Section -->
+<div class="greeting" style="text-align: center; margin: 20px; font-size: 24px; font-weight: bold;">
+    Hi {{ username }}! Welcome to your dashboard.
+</div>
+ <!-- New Section -->
+ <div class="section" id="imageSection">
+    <div class="content">
+       <br>
+       <br>
+       <br>
+       <br>
+       <br>
+    <br>
+    <br>
+    <br>
+    <br>
+<br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    </div>
+</div>
+<!-- Slider Section -->
+<div class="slider">
+    <button class="arrow left" onclick="prevSlide()">❮</button>
+    <div class="slides">
+        <!-- Slide 1: Single Bed -->
+        <div class="slide">
+            <img src='../static/images/single.jpg' alt="Single Bed">
+            <div class="details">
+                <h4>Single Bed</h4>
+                <p>EGP 199.99</p>
+                <button onclick="addToCart('Single Bed', 199.99, '../static/images/single.jpg')">Add to cart</button>
+            </div>
+        </div>
+        <!-- Slide 2: Double Bed -->
+        <div class="slide">
+            <img src="../static/images/double.jpg" alt="Double Bed">
+            <div class="details">
+                <h4>Double Bed</h4>
+                <p>EGP 299.99</p>
+                <button onclick="addToCart('Double Bed', 299.99, '../static/images/double.jpg')">Add to cart</button>
+            </div>
+        </div>
+        <!-- Slide 3: Italian Closet -->
+        <div class="slide">
+            <img src="../static/images/slide3.jpg" alt="Italian Closet">
+            <div class="details">
+                <h4>Italian Closet</h4>
+                <p>EGP 9.99</p>
+                <button onclick="addToCart('Italian Closet', 9.99, '../static/images/slide3.jpg')">Add to cart</button>
+            </div>
+        </div>
+        <!-- Slide 4: Turkish Closet -->
+        <div class="slide">
+            <img src="../static/images/turkish_closet.jpg" alt="Turkish Closet">
+            <div class="details">
+                <h4>Turkish Closet</h4>
+                <p>EGP 49.99</p>
+                <button onclick="addToCart('Turkish Closet', 49.99, '../static/images/turkish_closet.jpg')">Add to cart</button>
+            </div>
+        </div>
+        <!-- Slide 5: Dinner Table -->
+        <div class="slide">
+            <img src="../static/images/dinner.jpg" alt="Dinner Table">
+            <div class="details">
+                <h4>Dinner Table</h4>
+                <p>EGP 19.99</p>
+                <button onclick="addToCart('Dinner Table', 19.99, '../static/images/dinner.jpg')">Add to cart</button>
+            </div>
+        </div>
+        <!-- Slide 6: Study Table -->
+        <div class="slide">
+            <img src="../static/images/study.jpg" alt="Study Table">
+            <div class="details">
+                <h4>Study Table</h4>
+                <p>EGP 129.99</p>
+                <button onclick="addToCart('Study Table', 129.99, '../static/images/study.jpg')">Add to cart</button>
+            </div>
+        </div>
+        <!-- Slide 7: American Sofa -->
+        <div class="slide">
+            <img src="../static/images/american.jpg" alt="American Sofa">
+            <div class="details">
+                <h4>American Sofa</h4>
+                <p>EGP 399.99</p>
+                <button onclick="addToCart('American Sofa', 399.99, '../static/images/american.jpg')">Add to cart</button>
+            </div>
+        </div>
+        <!-- Slide 8: Turkish Sofa -->
+        <div class="slide">
+            <img src="../static/images/slide3.jpg" alt="Turkish Sofa">
+            <div class="details">
+                <h4>Turkish Sofa</h4>
+                <p>EGP 14.99</p>
+                <button onclick="addToCart('Turkish Sofa', 14.99, '../static/images/slide3.jpg')">Add to cart</button>
+            </div>
+        </div>
+        <!-- Slide 9: Office -->
+        <div class="slide">
+            <img src="../static/images/office.jpg" alt="Office">
+            <div class="details">
+                <h4>Office</h4>
+                <p>EGP 39.99</p>
+                <button onclick="addToCart('Office', 39.99, '../static/images/office.jpg')">Add to cart</button>
+            </div>
+        </div>
+        <!-- Slide 10: Chair -->
+        <div class="slide">
+            <img src="../static/images/chair.jpg" alt="Chair">
+            <div class="details">
+                <h4>Chair</h4>
+                <p>EGP 24.99</p>
+                <button onclick="addToCart('Chair', 24.99, '../static/images/chair.jpg')">Add to cart</button>
+            </div>
+        </div>
+         <div class="slide">
+            <img src='../static/images/mirror.jpg' alt="Single Bed">
+            <div class="details">
+                <h4>Mirror</h4>
+                <p>EGP 199.99</p>
+                <button onclick="addToCart('Mirror', 199.99, '../static/images/mirror.jpg')">Add to cart</button>
+            </div>
+        </div>
+    </div>
+    <button class="arrow right" onclick="nextSlide()">❯</button>
+</div>
+
+
+     <!-- Categories Section -->
+     <div class="categories" id="Categories">
+        <h2>Categories</h2>
+        <div class="categories-container">
+            <div class="category">
+                <img src='../static/images/cat1.png' alt="Salon">
+                <h4>Salon</h4>
+            </div>
+            <div class="category">
+                <img src='../static/images/cat2.png' alt="Office Furniture">
+                <h4>Office Furniture</h4>
+            </div>
+            <div class="category">
+                <img src='../static/images/cat3.png' alt="Antique">
+                <h4>Antique</h4>
+            </div>
+            <div class="category">
+                <img src='../static/images/cat4.png' alt="Pets Furniture">
+                <h4>Youth & Kids Furniture</h4>
+            </div>
+            <div class="category">
+                <img src='../static/images/cat5.png' alt="Outdoor">
+                <h4>Bedroom Furniture</h4>
+            </div>
+            <div class="category">
+                <img src='../static/images/cat6.png' alt="Special Offers">
+                <h4>Living Room Furniture</h4>
+            </div>
+
+        </div>
+
+    </div>
+   <!-- Modal -->
+
+   <div id="cart-modal" class="modal">
+    <div class="modal-content">
+        <h3>Order Details</h3>
+        <div id="cart-items">
+            <!-- Items will be dynamically added here -->
+        </div>
+        <button onclick="confirmOrder()" class="confirm-btn">Confirm Order</button>
+        <button onclick="closeCartModal()" class="close-btn">Close</button>
+    </div>
+</div>
+
+<div class="video-section">
+    <h2>Featured Product Video</h2>
+    <video id="featured-video" muted>
+        <source src='../static/images/vid.mp4' type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+<div class="dev">    <h1>Web Developers:</h1>
+</div>
+<div class="wrapper">
+    <div class="card">
+        <div class="circle">
+            <img src='../static/images/malik.jpg' alt="Image 1">
+        </div>
+        <h3>Malik arqoup</h3>
+        <p>1211686</p>
+        <button>Read More</button>
+    </div>
+    <div class="card">
+        <div class="circle">
+            <img src='../static/images/ahmad.jpg' alt="Image 2">
+        </div>
+        <h3>Ahmad Elayyan</h3>
+        <p>1210443</p>
+        <button>Read More</button>
+    </div>
+    <div class="card">
+        <div class="circle">
+            <img src='../static/images/saed.jpeg' alt="Image 3">
+        </div>
+        <h3>Saed rimawi</h3>
+        <p>1211714</p>
+        <button>Read More</button>
+    </div>
+</div>
+
+  <!-- Contact Us Section -->
+    <!-- Contact Us Section -->
+    <div class="contact-us"id="Contact Us">
+        <h2>Contact Us</h2>
+        <p>Follow us on our social media platforms for more updates:</p>
+        <div class="social-icons">
+            <!-- Replace '#' with your actual links -->
+            <a href="https://www.facebook.com/profile.php?id=100008746216738" target="_blank">
+                <i class="fa-brands fa-facebook"></i>
+            </a>
+            <a href="https://tiktok.com" target="_blank">
+                <i class="fa-brands fa-tiktok"></i>
+            </a>
+            <a href="https://https://www.instagram.com/ahmad_elayyan35/" target="_blank">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="https://wa.me/123456789" target="_blank">
+                <i class="fa-brands fa-whatsapp"></i>
+            </a>
+        </div>
+    </div>
+
+<footer>
+    &copy; 2024 Athath. All Rights Reserved.
+</footer>
+
+    <script>
+        let cart = [];
+
+function addToCart(productName, productPrice, productImg) {
+    const existingItem = cart.find(item => item.name === productName);
+    if (existingItem) {
+        existingItem.quantity++;
+    } else {
+        cart.push({ name: productName, price: productPrice, img: productImg, quantity: 1 });
+    }
+    updateCartModal();
+    openCartModal();
+}
+
+function updateCartModal() {
+    const cartItems = document.getElementById('cart-items');
+    cartItems.innerHTML = '';
+
+    cart.forEach((item, index) => {
+        const cartItem = document.createElement('div');
+        cartItem.className = 'cart-item';
+        cartItem.innerHTML = `
+            <img src="${item.img}" alt="${item.name}">
+            <div class="details">
+                <p>${item.name}</p>
+                <p>Price: EGP ${item.price}</p>
+            </div>
+            <div class="quantity-control">
+                <button onclick="decreaseQuantity(${index})">-</button>
+                <input type="number" value="${item.quantity}" readonly>
+                <button onclick="increaseQuantity(${index})">+</button>
+            </div>
+            <button onclick="removeItem(${index})" class="remove-btn">🗑</button>
+        `;
+        cartItems.appendChild(cartItem);
+    });
+}
+
+function increaseQuantity(index) {
+    cart[index].quantity++;
+    updateCartModal();
+}
+
+function decreaseQuantity(index) {
+    if (cart[index].quantity > 1) {
+        cart[index].quantity--;
+    } else {
+        removeItem(index);
+    }
+    updateCartModal();
+}
+
+function removeItem(index) {
+    cart.splice(index, 1);
+    updateCartModal();
+}
+
+function openCartModal() {
+    document.getElementById('cart-modal').style.display = 'flex';
+}
+
+function closeCartModal() {
+    document.getElementById('cart-modal').style.display = 'none';
+}
+
+function confirmOrder() {
+    fetch('/add_order', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ cart }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert(data.message); // Show success message
+                cart = []; // Clear the cart
+                updateCartModal();
+                closeCartModal();
+            } else if (data.error) {
+                alert(`Error: ${data.error}`); // Show error message
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An unexpected error occurred.');
+        });
+}
+          const video = document.getElementById('featured-video');
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            video.play();
+        } else {
+            video.pause();
+        }
+    });
+});
+
+observer.observe(video);
+
+
+
+
+        const images = ['../static/images/amin.jpg','../static/images/kh2.jpg']; // أسماء الصور
+        let currentImageIndex = 0;
+
+        function updateBackground() {
+            const section = document.getElementById('imageSection');
+            section.style.backgroundImage = `url(${images[currentImageIndex]})`;
+        }
+
+        function prevImage() {
+            currentImageIndex = (currentImageIndex > 0) ? currentImageIndex - 1 : images.length - 1;
+            updateBackground();
+        }
+
+        function nextImage() {
+            currentImageIndex = (currentImageIndex < images.length - 1) ? currentImageIndex + 1 : 0;
+            updateBackground();
+        }
+
+        setInterval(nextImage, 5000); // تغيير تلقائي كل 5 ثوانٍ
+        let currentSlide = 0;
+
+function showSlide(index) {
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+
+    if (index >= totalSlides) {
+        currentSlide = 0;
+    } else if (index < 0) {
+        currentSlide = totalSlides - 1;
+    } else {
+        currentSlide = index;
+    }
+
+    const slider = document.querySelector('.slides');
+    slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+}
+
+function nextSlide() {
+    showSlide(currentSlide + 1);
+}
+
+function prevSlide() {
+    showSlide(currentSlide - 1);
+}
+
+    </script>
+</body>
+</html>

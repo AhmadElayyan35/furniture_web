@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+</head>
+<body>
+    <h1>Search Results for "{{ query }}"</h1>
+    <ul>
+        {% for product in results %}
+        <li>
+            <img src="{{ product.ImageURL }}" alt="{{ product.sName }}" width="50">
+            {{ product.sName }} - EGP {{ product.Price }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% if results|length == 0 %}
+    <p>No results found for "{{ query }}".</p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Employee Management</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .back-button {
+      display: inline-block;
+      margin-bottom: 20px;
+      background-color: #3498db;
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+    }
+    .back-button:hover {
+      background-color: #2980b9;
+    }
+    .filter-form {
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      display: inline-block;
+    }
+    label {
+      display: inline-block;
+      width: 80px;
+      margin-bottom: 10px;
+    }
+    input[type="number"], select {
+      padding: 5px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 8px 16px;
+      cursor: pointer;
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      margin-left: 10px;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    table {
+      width: 90%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      text-align: left;
+      border: 1px solid #ccc;
+      padding: 8px;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .inline-form {
+      display: inline;
+    }
+    .inline-form input[type="number"] {
+      width: 80px; /* narrow salary input */
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+  <a href="/admin" class="back-button">Back to Home</a>
+  <h1>Employee Management</h1>
+
+  <!-- Filter Form -->
+  <form method="POST" class="filter-form">
+    <label for="role">Role:</label>
+    <select name="role" id="role">
+      <option value="ALL">ALL</option>
+      {% for r in roles %}
+      <option value="{{ r }}" {% if selected_role == r %}selected{% endif %}>{{ r }}</option>
+      {% endfor %}
+    </select>
+    <br>
+
+    <label for="min_salary">Min Salary:</label>
+    <input type="number" step="0.01" name="min_salary" id="min_salary"
+           value="{{ min_salary if min_salary else '' }}"><br>
+
+    <label for="max_salary">Max Salary:</label>
+    <input type="number" step="0.01" name="max_salary" id="max_salary"
+           value="{{ max_salary if max_salary else '' }}"><br>
+
+    <!-- New: Sort by Salary -->
+    <label for="sort_by_salary">Sort by Salary:</label>
+    <select name="sort_by_salary" id="sort_by_salary">
+      <option value="" {% if not sort_by_salary %}selected{% endif %}>None</option>
+      <option value="asc" {% if sort_by_salary == 'asc' %}selected{% endif %}>Ascending</option>
+      <option value="desc" {% if sort_by_salary == 'desc' %}selected{% endif %}>Descending</option>
+    </select>
+    <br>
+
+    <button type="submit">Apply Filters</button>
+  </form>
+
+  {% if employees %}
+    <table>
+      <thead>
+        <tr>
+          <th>EmployeeID</th>
+          <th>Name</th>
+          <th>Role</th>
+          <th>Salary</th>
+          <th>Phone</th>
+          <th>HireDate</th>
+          <th>StorageID</th>
+          <th>Update Salary</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for emp in employees %}
+        <tr>
+          <td>{{ emp['EmployeeID'] }}</td>
+          <td>{{ emp['sName'] }}</td>
+          <td>{{ emp['rRole'] }}</td>
+          <!-- 'salary' is the correct lowercase column name -->
+          <td>{{ "%.2f"|format(emp['salary']) }}</td>
+          <td>{{ emp['PhoneNumber'] }}</td>
+          <td>{{ emp['HireDate'] }}</td>
+          <td>{{ emp['StorageID'] }}</td>
+          <td>
+            <!-- Inline update form -->
+            <form method="POST" class="inline-form" action="/employee_manage">
+              <input type="hidden" name="employee_id" value="{{ emp['EmployeeID'] }}">
+              <input type="number" step="0.01" name="new_salary" placeholder="New salary">
+              <button type="submit">Update</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No employees found with these filters.</p>
+  {% endif %}
+</body>
+</html>

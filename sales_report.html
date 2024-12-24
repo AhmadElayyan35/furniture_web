@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sales Report</title>
+  <style>
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 0;
+  color: #2c3e50;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 2em;
+  color: #34495e;
+}
+
+.back-button {
+  display: inline-block;
+  background-color: #28a745;
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1.2em;
+  margin: 20px auto;
+  display: block;
+  width: max-content;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #218838;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+form.report-form {
+  background: #fff;
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+}
+
+label {
+  display: block;
+  font-size: 1.1em;
+  margin-bottom: 5px;
+  color: #7f8c8d;
+}
+
+input[type="date"],
+select {
+  padding: 10px;
+  font-size: 1em;
+  width: 100%;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+select[multiple] {
+  height: 120px;
+}
+
+button[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 1.2em;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #2980b9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.result {
+  background-color: #ecf0f1;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 1.2em;
+  text-align: center;
+  margin: 20px auto;
+  max-width: 500px;
+}
+
+.chart-container {
+  width: 80%;
+  margin: 30px auto;
+  max-width: 800px;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.top-products-table {
+  margin: 20px auto;
+  border-collapse: collapse;
+  width: 80%;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.top-products-table th,
+.top-products-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.top-products-table th {
+  background-color: #f4f4f4;
+  color: #34495e;
+}
+
+.top-products-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.top-products-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.section-title {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 1.5em;
+  color: #34495e;
+}
+  </style>
+</head>
+<body>
+  <!-- Back to Home Button -->
+  <a href="/admin" class="back-button">Back to Home</a>
+
+  <h1>Sales Report</h1>
+
+  <!-- Report Form -->
+  <form method="POST" class="report-form">
+    <!-- Date Range -->
+    <p>
+      <label for="start_date">Start Date:</label><br>
+      <input
+        type="date"
+        id="start_date"
+        name="start_date"
+        value="{{ start_date if start_date else '' }}"
+      >
+    </p>
+    <p>
+      <label for="end_date">End Date:</label><br>
+      <input
+        type="date"
+        id="end_date"
+        name="end_date"
+        value="{{ end_date if end_date else '' }}"
+      >
+    </p>
+
+    <!-- Multi-select Clients -->
+    <p>
+      <label for="client_ids">Clients:</label><br>
+      <select
+        name="client_ids"
+        id="client_ids"
+        multiple
+      >
+        {% for c in clients %}
+          <option
+            value="{{ c['ClientID'] }}"
+            {% if c['ClientID']|string in selected_client_ids %}
+              selected="selected"
+            {% endif %}
+          >
+            {{ c['sName'] }}
+          </option>
+        {% endfor %}
+      </select>
+      <br><small>Ctrl or Cmd-click to select multiple clients</small>
+    </p>
+
+    <!-- Multi-select Products -->
+    <p>
+      <label for="product_ids">Products:</label><br>
+      <select
+        name="product_ids"
+        id="product_ids"
+        multiple
+      >
+        {% for p in products %}
+          <option
+            value="{{ p['ProductID'] }}"
+            {% if p['ProductID']|string in selected_product_ids %}
+              selected="selected"
+            {% endif %}
+          >
+            {{ p['sName'] }}
+          </option>
+        {% endfor %}
+      </select>
+      <br><small>Ctrl or Cmd-click to select multiple products</small>
+    </p>
+
+    <!-- Submit Button -->
+    <p>
+      <button type="submit">Get Sales</button>
+    </p>
+  </form>
+
+  <!-- Show the overall total (if any) -->
+  {% if total_sales is not none %}
+    <div class="result">
+      Total Sales: <strong>{{ "%.2f"|format(total_sales) }}</strong>
+    </div>
+  {% endif %}
+
+  <!-- Daily Sales Chart (if we have daily_sales) -->
+  {% if daily_sales %}
+    <h2 class="section-title">Daily Sales</h2>
+    <div class="chart-container">
+      <canvas id="salesChart"></canvas>
+    </div>
+  {% endif %}
+
+  <!-- TOP 5 PRODUCTS TABLE -->
+  {% if top_five_products %}
+    <h2 class="section-title">Top 5 Products (Units Sold)</h2>
+    <table class="top-products-table">
+      <thead>
+        <tr>
+          <th>Product Name</th>
+          <th>Units Sold</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in top_five_products %}
+        <tr>
+          <td>{{ item.product_name }}</td>
+          <td>{{ item.total_qty }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+
+  <!-- Chart.js (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    {% if daily_sales %}
+      const dailyLabels = [
+        {% for row in daily_sales %}
+          "{{ row.day }}",
+        {% endfor %}
+      ];
+      const dailyAmounts = [
+        {% for row in daily_sales %}
+          {{ row.amount }},
+        {% endfor %}
+      ];
+
+      const ctx = document.getElementById('salesChart').getContext('2d');
+      const salesChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: dailyLabels,
+          datasets: [{
+            label: 'Daily Sales',
+            data: dailyAmounts,
+            backgroundColor: 'rgba(52, 152, 219, 0.6)',
+            borderColor: 'rgba(52, 152, 219, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Sales Amount'
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Date'
+              }
+            }
+          }
+        }
+      });
+    {% endif %}
+  </script>
+</body>
+</html>

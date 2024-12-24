@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Today's Sales</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1, h2 {
+      color: #2c3e50;
+    }
+    table {
+      width: 80%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+      text-align: center;
+      padding: 8px;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .chart-container {
+      width: 80%;
+      max-width: 800px;
+      margin: 30px auto;
+    }
+    .back-button {
+      display: inline-block;
+      background-color: #28a745;
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+    .back-button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <!-- A "Back to Home" button if needed -->
+  <a href="/admin" class="back-button">Back to Home</a>
+
+  <h1>Today's Sales</h1>
+
+  <!-- 1) Detailed Table of Today’s Sales -->
+  <h2>Order Details</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Client</th>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Line Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if today_details %}
+        {% for row in today_details %}
+        <tr>
+          <td>{{ row.client_name }}</td>
+          <td>{{ row.product_name }}</td>
+          <td>{{ row.quantity }}</td>
+          <td>{{ "%.2f"|format(row.price) }}</td>
+          <td>{{ "%.2f"|format(row.line_total) }}</td>
+        </tr>
+        {% endfor %}
+      {% else %}
+        <tr><td colspan="5">No sales found for today.</td></tr>
+      {% endif %}
+    </tbody>
+  </table>
+
+  <!-- 2) Bar Chart of Total Sales by Product -->
+  <h2>Sales by Product (Bar Chart)</h2>
+  <div class="chart-container">
+    <canvas id="productChart"></canvas>
+  </div>
+
+  <!-- Chart.js from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    {% if product_totals %}
+      const productLabels = [
+        {% for item in product_totals %}
+          "{{ item.product_name }}",
+        {% endfor %}
+      ];
+      const productSales = [
+        {% for item in product_totals %}
+          {{ item.product_total }},
+        {% endfor %}
+      ];
+
+      const ctx = document.getElementById('productChart').getContext('2d');
+      const productChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: productLabels,
+          datasets: [{
+            label: 'Total Sales',
+            data: productSales,
+            backgroundColor: 'rgba(52, 152, 219, 0.6)',
+            borderColor: 'rgba(52, 152, 219, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Sales (Currency)'
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Product'
+              }
+            }
+          }
+        }
+      });
+    {% endif %}
+  </script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="stylesheet" href="error.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+  
+
+    <style>
+
+/* تنسيق الصفحة بشكل عام */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4; /* خلفية فاتحة */
+    display: flex;
+    justify-content: center; /* توسيط أفقي */
+    align-items: center; /* توسيط عمودي */
+    height: 100vh; /* ملء الشاشة */
+}
+
+/* حاوية الخطأ */
+.error-container {
+    text-align: center;
+    background-color: #ffffff; /* خلفية بيضاء */
+    padding: 40px;
+    border-radius: 10px; /* زوايا مستديرة */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* ظل خفيف */
+    max-width: 400px;
+    width: 100%;
+}
+
+/* العنوان الرئيسي */
+.error-container h1 {
+    font-size: 2em;
+    color: #e74c3c; /* لون أحمر */
+    margin-bottom: 15px;
+}
+
+/* نص الخطأ */
+.error-container p {
+    font-size: 1.1em;
+    color: #555; /* لون رمادي غامق */
+    margin-bottom: 20px;
+    word-wrap: break-word; /* منع تجاوز النص للحدود */
+}
+
+/* زر العودة */
+.back-button {
+    text-decoration: none;
+    color: #fff; /* لون النص أبيض */
+    background-color: #3498db; /* لون الزر أزرق */
+    padding: 10px 20px;
+    border-radius: 5px; /* زوايا مستديرة */
+    font-size: 1em;
+    transition: background-color 0.3s ease; /* تأثير تغيير اللون */
+}
+
+/* تأثير عند تمرير المؤشر على الزر */
+.back-button:hover {
+    background-color: #2980b9; /* أزرق أغمق */
+}
+
+
+
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <h1>An Error Occurred</h1>
+        <p>{{ error }}</p>
+        <a href="/" class="back-button">Back to Home</a>
+    </div>
+</body>
+</html>

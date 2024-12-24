@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add to {{ table_name }}</title>
+    <style>
+/* تنسيق عام للصفحة */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4; /* لون خلفية هادئ */
+    display: flex;
+    justify-content: center; /* توسيط أفقي */
+    align-items: center; /* توسيط عمودي */
+    height: 100vh; /* ملء الشاشة */
+}
+
+/* الحاوية الرئيسية */
+.form-container {
+    background-color: #ffffff; /* خلفية بيضاء */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* ظل خفيف */
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+}
+
+/* العنوان */
+.form-container h1 {
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    color: #333;
+}
+
+/* الحقول */
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1em;
+    color: #555;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #3498db; /* لون عند التركيز */
+    outline: none;
+}
+
+/* زر الإرسال */
+.submit-button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #3498db; /* زر أزرق */
+    color: #fff;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #2980b9; /* زر أغمق عند التمرير */
+}
+
+/* زر العودة */
+.back-button {
+    display: inline-block;
+    margin-top: 15px;
+    text-decoration: none;
+    color: #3498db;
+    font-size: 0.9em;
+    transition: color 0.3s ease;
+}
+
+.back-button:hover {
+    color: #2980b9;
+}
+
+/* تحسين العرض على الشاشات الصغيرة */
+@media (max-width: 600px) {
+    .form-container {
+        padding: 20px;
+    }
+
+    .form-container h1 {
+        font-size: 1.5em;
+    }
+
+    .form-group label, 
+    .form-group input,
+    .submit-button {
+        font-size: 0.9em;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Add Data to {{ table_name }}</h1>
+        <form method="POST">
+            {% if table_name == "StorageT" %}
+            <div class="form-group">
+                <label for="StorageID">Storage ID:</label>
+                <input type="number" id="StorageID" name="StorageID" required>
+            </div>
+            <div class="form-group">
+                <label for="Location">Location:</label>
+                <input type="text" id="Location" name="Location" required>
+            </div>
+            <div class="form-group">
+                <label for="Capacity">Capacity:</label>
+                <input type="number" id="Capacity" name="Capacity" required>
+            </div>
+
+            {% elif table_name == "Employees" %}
+            <div class="form-group">
+                <label for="EmployeeID">Employee ID:</label>
+                <input type="number" id="EmployeeID" name="EmployeeID" required>
+            </div>
+            <div class="form-group">
+                <label for="sName">Name:</label>
+                <input type="text" id="sName" name="sName" required>
+            </div>
+            <div class="form-group">
+                <label for="rRole">Role:</label>
+                <input type="text" id="rRole" name="rRole" required>
+            </div>
+            <div class="form-group">
+    <label for="Salary">Salary:</label>
+    <input type="number" id="Salary" name="Salary" step="0.01" required>
+</div>
+
+            <div class="form-group">
+                <label for="PhoneNumber">Phone Number:</label>
+                <input type="text" id="PhoneNumber" name="PhoneNumber" required>
+            </div>
+            <div class="form-group">
+                <label for="HireDate">Hire Date:</label>
+                <input type="date" id="HireDate" name="HireDate" required>
+            </div>
+            <div class="form-group">
+                <label for="StorageID">Storage ID:</label>
+                <input type="number" id="StorageID" name="StorageID">
+            </div>
+
+            {% elif table_name == "Clients" %}
+            <div class="form-group">
+                <label for="ClientID">Client ID:</label>
+                <input type="number" id="ClientID" name="ClientID" required>
+            </div>
+            <div class="form-group">
+                <label for="sName">Name:</label>
+                <input type="text" id="sName" name="sName" required>
+            </div>
+            <div class="form-group">
+                <label for="Email">Email:</label>
+                <input type="email" id="Email" name="Email" required>
+            </div>
+            <div class="form-group">
+                <label for="PhoneNumber">Phone Number:</label>
+                <input type="text" id="PhoneNumber" name="PhoneNumber" required>
+            </div>
+            <div class="form-group">
+                <label for="Address">Address:</label>
+                <input type="text" id="Address" name="Address" required>
+            </div>
+
+            {% elif table_name == "Suppliers" %}
+            <div class="form-group">
+                <label for="SupplierID">Supplier ID:</label>
+                <input type="number" id="SupplierID" name="SupplierID" required>
+            </div>
+            <div class="form-group">
+                <label for="sName">Name:</label>
+                <input type="text" id="sName" name="sName" required>
+            </div>
+            <div class="form-group">
+                <label for="Rating">Rating:</label>
+                <input type="number" id="Rating" name="Rating" required>
+            </div>
+            <div class="form-group">
+                <label for="PhoneNumber">Phone Number:</label>
+                <input type="text" id="PhoneNumber" name="PhoneNumber" required>
+            </div>
+            <div class="form-group">
+                <label for="Address">Address:</label>
+                <input type="text" id="Address" name="Address" required>
+            </div>
+            <div class="form-group">
+                <label for="Email">Email:</label>
+                <input type="email" id="Email" name="Email" required>
+            </div>
+
+            {% elif table_name == "Products" %}
+            <div class="form-group">
+                <label for="ProductID">Product ID:</label>
+                <input type="number" id="ProductID" name="ProductID" required>
+            </div>
+            <div class="form-group">
+                <label for="sName">Name:</label>
+                <input type="text" id="sName" name="sName" required>
+            </div>
+            <div class="form-group">
+                <label for="Category">Category:</label>
+                <input type="text" id="Category" name="Category" required>
+            </div>
+            <div class="form-group">
+                <label for="Price">Price:</label>
+                <input type="number" step="0.01" id="Price" name="Price" required>
+            </div>
+            <div class="form-group">
+                <label for="QuantityInStock">Quantity In Stock:</label>
+                <input type="number" id="QuantityInStock" name="QuantityInStock" required>
+            </div>
+            <div class="form-group">
+                <label for="SupplierID">Supplier ID:</label>
+                <input type="number" id="SupplierID" name="SupplierID">
+            </div>
+            <div class="form-group">
+                <label for="StorageID">Storage ID:</label>
+                <input type="number" id="StorageID" name="StorageID">
+            </div>
+
+            {% elif table_name == "Orders" %}
+            <div class="form-group">
+                <label for="OrderID">Order ID:</label>
+                <input type="number" id="OrderID" name="OrderID" required>
+            </div>
+            <div class="form-group">
+                <label for="ClientID">Client ID:</label>
+                <input type="number" id="ClientID" name="ClientID" required>
+            </div>
+            <div class="form-group">
+                <label for="OrderDate">Order Date:</label>
+                <input type="date" id="OrderDate" name="OrderDate" required>
+            </div>
+            <div class="form-group">
+                <label for="TotalAmount">Total Amount:</label>
+                <input type="number" step="0.01" id="TotalAmount" name="TotalAmount" required>
+            </div>
+
+            {% elif table_name == "OrderItems" %}
+            <div class="form-group">
+                <label for="OrderItemID">Order Item ID:</label>
+                <input type="number" id="OrderItemID" name="OrderItemID" required>
+            </div>
+            <div class="form-group">
+                <label for="OrderID">Order ID:</label>
+                <input type="number" id="OrderID" name="OrderID" required>
+            </div>
+            <div class="form-group">
+                <label for="ProductID">Product ID:</label>
+                <input type="number" id="ProductID" name="ProductID" required>
+            </div>
+            <div class="form-group">
+                <label for="Quantity">Quantity:</label>
+                <input type="number" id="Quantity" name="Quantity" required>
+            </div>
+            <div class="form-group">
+                <label for="Price">Price:</label>
+                <input type="number" step="0.01" id="Price" name="Price" required>
+            </div>
+
+            {% elif table_name == "EmployeeOrders" %}
+            <div class="form-group">
+                <label for="EmployeeID">Employee ID:</label>
+                <input type="number" id="EmployeeID" name="EmployeeID" required>
+            </div>
+            <div class="form-group">
+                <label for="OrderID">Order ID:</label>
+                <input type="number" id="OrderID" name="OrderID" required>
+            </div>
+
+            {% endif %}
+            <button type="submit" class="submit-button">Add Record</button>
+        </form>
+<a href="{{ url_for('view_table', table_name=table_name) }}" class="back-button">Back to Table</a>
+    </div>
+</body>
+</html>

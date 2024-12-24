@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - AlAmeanFurniture</title>
+    <style>
+        /* General styling */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5; /* Light background */
+            color: #333; /* Neutral text color */
+        }
+
+        /* Navbar styling */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #2a2a2a; /* Dark navbar */
+            padding: 10px 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .logo a {
+            text-decoration: none;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #fff;
+            transition: color 0.3s ease;
+        }
+
+        .navbar .logo a:hover {
+            color: #ffcc80; /* Highlight on hover */
+        }
+
+        .navbar .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            margin: 0;
+        }
+
+        .navbar .nav-links a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1em;
+            transition: color 0.3s ease;
+        }
+
+        .navbar .nav-links a:hover {
+            color: #ffcc80;
+        }
+
+        /* Main header styling */
+        .main-header {
+            text-align: center;
+            background-image: url('../static/images/1.jpg'); /* Replace with actual image path */
+            background-size: cover;
+            background-position: center;
+            background-color: #2a2a2a;
+            color: #fff;
+            padding: 100px 20px;
+            position: relative;
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .main-header h1 {
+            font-size: 4em;
+            font-weight: bold;
+            margin: 0;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .main-header p {
+            font-size: 1.5em;
+            margin-top: 10px;
+            color: #c6a34a;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Links section */
+        .table-links {
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 1200px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-links ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .table-links li {
+            flex: 1 1 calc(33.33% - 20px); /* 3 items per row */
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Buttons */
+        a.button {
+            text-decoration: none;
+            font-size: 1em;
+            color: #fff;
+            background-color: #3d1102;
+            padding: 15px 25px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        a.button:hover {
+            background-color: #493833;
+            transform: translateY(-3px); /* Lift effect */
+        }
+
+        a.button.secondary {
+            background-color: #a1887f; /* Secondary color */
+        }
+
+        a.button.secondary:hover {
+            background-color: #8d6e63;
+        }
+
+        /* Responsive styling */
+        @media (max-width: 768px) {
+            .main-header h1 {
+                font-size: 2.5em;
+            }
+
+            .main-header p {
+                font-size: 1.2em;
+            }
+
+            .table-links li {
+                flex: 1 1 calc(50% - 10px); /* 2 items per row */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .table-links li {
+                flex: 1 1 100%; /* 1 item per row */
+            }
+
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar .nav-links {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo"><a href="/">AlAmeanFurniture</a></div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Header -->
+    <header class="main-header">
+        <h1>Admin Dashboard</h1>
+        <p>Welcome to your management panel</p>
+    </header>
+
+    <!-- Links Section -->
+    <section class="table-links">
+        <ul>
+            <li><a class="button" href="{{ url_for('view_table', table_name='StorageT') }}">View Storage</a></li>
+            <li><a class="button" href="{{ url_for('view_table', table_name='Employees') }}">View Employees</a></li>
+            <li><a class="button" href="{{ url_for('view_table', table_name='Clients') }}">View Clients</a></li>
+            <li><a class="button" href="{{ url_for('view_table', table_name='Suppliers') }}">View Suppliers</a></li>
+            <li><a class="button" href="{{ url_for('view_table', table_name='Products') }}">View Products</a></li>
+            <li><a class="button" href="{{ url_for('view_table', table_name='Orders') }}">View Orders</a></li>
+            <li><a class="button" href="{{ url_for('view_table', table_name='OrderItems') }}">View Order Items</a></li>
+            <li><a class="button" href="{{ url_for('view_table', table_name='EmployeeOrders') }}">View Employee Orders</a></li>
+            <li><a class="button" href="{{ url_for('sales_report') }}">Sales Report</a></li>
+            <li><a class="button" href="{{ url_for('today_sales') }}">Today’s Sales</a></li>
+            <li><a class="button" href="{{ url_for('employee_manage') }}">Employee Manage</a></li>
+            <li><a class="button" href="{{ url_for('clients_orders') }}">Clients Orders</a></li>
+        </ul>
+    </section>
+</body>
+</html>
